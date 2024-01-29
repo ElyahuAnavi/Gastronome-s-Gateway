@@ -57,7 +57,6 @@ exports.updateOne = Model =>
  */
 exports.createOne = Model =>
   catchAsync(async (req, res, next) => {
-
     // Create a new document using the request body data
     const doc = await Model.create(req.body);
 
