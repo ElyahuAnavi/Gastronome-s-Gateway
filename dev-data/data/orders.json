@@ -1,0 +1,377 @@
+[
+    {
+        "user": "5c8a201e2f8fb814b56fa186",
+        "dishes": [
+            {
+                "dish": "5c8a24a02f8fb814b56fa109",
+                "quantity": 3
+            }
+        ],
+        "orderTime": "2023-02-21 00:00:00",
+        "orderScheduled": "2023-02-21 01:00:00",
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                122.69053089548697,
+                -88.12750621149817
+            ],
+            "address": "Random Address 1"
+        },
+        "isSelfCollection": false,
+        "isItDone": true
+    },
+    {
+        "user": "5c8a1d5b0190b214360dc057",
+        "dishes": [
+            {
+                "dish": "5c8a24a02f8fb814b56fa106",
+                "quantity": 3
+            },
+            {
+                "dish": "5c8a24a02f8fb814b56fa108",
+                "quantity": 1
+            }
+        ],
+        "orderTime": "2022-08-26 00:00:00",
+        "orderScheduled": "2022-08-26 02:00:00",
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                -136.05070014054778,
+                49.14510430138347
+            ],
+            "address": "Random Address 2"
+        },
+        "isSelfCollection": true,
+        "isItDone": true
+    },
+    {
+        "user": "5c8a22c62f8fb814b56fa18b",
+        "dishes": [
+            {
+                "dish": "5c8a24a02f8fb814b56fa10A",
+                "quantity": 1
+            }
+        ],
+        "orderTime": "2022-01-21 00:00:00",
+        "orderScheduled": "2022-01-21 01:00:00",
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                -77.23384703023632,
+                -88.67538275274887
+            ],
+            "address": "Random Address 3"
+        },
+        "isSelfCollection": false,
+        "isItDone": false
+    },
+    {
+        "user": "5c8a24402f8fb814b56fa190",
+        "dishes": [
+            {
+                "dish": "5c8a24a02f8fb814b56fa107",
+                "quantity": 1
+            },
+            {
+                "dish": "5c8a24a02f8fb814b56fa103",
+                "quantity": 3
+            }
+        ],
+        "orderTime": "2023-07-10 00:00:00",
+        "orderScheduled": "2023-07-10 05:00:00",
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                -118.37670775743071,
+                -23.449271195624732
+            ],
+            "address": "Random Address 4"
+        },
+        "isSelfCollection": false,
+        "isItDone": true
+    },
+    {
+        "user": "5c8a24a02f8fb814b56fa193",
+        "dishes": [
+            {
+                "dish": "5c8a24a02f8fb814b56fa107",
+                "quantity": 2
+            },
+            {
+                "dish": "5c8a24a02f8fb814b56fa104",
+                "quantity": 1
+            }
+        ],
+        "orderTime": "2022-02-02 06:00:00",
+        "orderScheduled": "2022-02-02 08:00:00",
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                -63.960798602491124,
+                -6.207701301726374
+            ],
+            "address": "Random Address 5"
+        },
+        "isSelfCollection": false,
+        "isItDone": false
+    },
+    {
+        "user": "5c8a23c82f8fb814b56fa18d",
+        "dishes": [
+            {
+                "dish": "5c8a24a02f8fb814b56fa106",
+                "quantity": 1
+            }
+        ],
+        "orderTime": "2023-11-15 06:00:00",
+        "orderScheduled": "2023-11-15 08:00:00",
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                -40.16950949482029,
+                78.72614333674463
+            ],
+            "address": "Random Address 6"
+        },
+        "isSelfCollection": true,
+        "isItDone": true
+    },
+    {
+        "user": "5c8a1d5b0190b214360dc057",
+        "dishes": [
+            {
+                "dish": "5c8a24a02f8fb814b56fa101",
+                "quantity": 1
+            },
+            {
+                "dish": "5c8a24a02f8fb814b56fa102",
+                "quantity": 2
+            },
+            {
+                "dish": "5c8a24a02f8fb814b56fa108",
+                "quantity": 1
+            }
+        ],
+        "orderTime": "2023-03-22 08:00:00",
+        "orderScheduled": "2023-03-22 09:00:00",
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                -93.94235076956352,
+                7.370161121088032
+            ],
+            "address": "Random Address 7"
+        },
+        "isSelfCollection": false,
+        "isItDone": true
+    },
+    {
+        "user": "5c8a24402f8fb814b56fa190",
+        "dishes": [
+            {
+                "dish": "5c8a24a02f8fb814b56fa107",
+                "quantity": 1
+            },
+            {
+                "dish": "5c8a24a02f8fb814b56fa106",
+                "quantity": 1
+            }
+        ],
+        "orderTime": "2023-11-25 16:10:00",
+        "orderScheduled": "2023-11-25 17:15:00",
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                80.10531728214613,
+                -3.3706441348813314
+            ],
+            "address": "Random Address 8"
+        },
+        "isSelfCollection": true,
+        "isItDone": false
+    },
+    {
+        "user": "5c8a23de2f8fb814b56fa18e",
+        "dishes": [
+            {
+                "dish": "5c8a24a02f8fb814b56fa10A",
+                "quantity": 1
+            },
+            {
+                "dish": "5c8a24a02f8fb814b56fa10A",
+                "quantity": 3
+            },
+            {
+                "dish": "5c8a24a02f8fb814b56fa105",
+                "quantity": 3
+            }
+        ],
+        "orderTime": "2023-04-17 17:00:00",
+        "orderScheduled": "2023-04-17 20:15:00",
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                -109.1661920806544,
+                -28.264124392575894
+            ],
+            "address": "Random Address 9"
+        },
+        "isSelfCollection": true,
+        "isItDone": false
+    },
+    {
+        "user": "5c8a22c62f8fb814b56fa18b",
+        "dishes": [
+            {
+                "dish": "5c8a24a02f8fb814b56fa103",
+                "quantity": 1
+            },
+            {
+                "dish": "5c8a24a02f8fb814b56fa104",
+                "quantity": 3
+            }
+        ],
+        "orderTime": "2023-11-18 16:00:00",
+        "orderScheduled": "2023-11-18 17:15:00",
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                -6.209745704803737,
+                -21.449484885772577
+            ],
+            "address": "Random Address 10"
+        },
+        "isSelfCollection": true,
+        "isItDone": true
+    },
+    {
+        "user": "5c8a1f4e2f8fb814b56fa185",
+        "dishes": [
+            {
+                "dish": "5c8a24a02f8fb814b56fa102",
+                "quantity": 1
+            },
+            {
+                "dish": "5c8a24a02f8fb814b56fa105",
+                "quantity": 1
+            }
+        ],
+        "orderTime": "2023-03-09 14:15:00",
+        "orderScheduled": "2023-03-09 16:00:00",
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                134.46501930346437,
+                -1.3080853835186304
+            ],
+            "address": "Random Address 11"
+        },
+        "isSelfCollection": true,
+        "isItDone": false
+    },
+    {
+        "user": "5c8a21f22f8fb814b56fa18a",
+        "dishes": [
+            {
+                "dish": "5c8a24a02f8fb814b56fa105",
+                "quantity": 1
+            }
+        ],
+        "orderTime": "2023-11-18 10:00:00",
+        "orderScheduled": "2023-11-18 12:00:00",
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                149.34243160973722,
+                64.45968610372691
+            ],
+            "address": "Random Address 12"
+        },
+        "isSelfCollection": true,
+        "isItDone": true
+    },
+    {
+        "user": "5c8a22c62f8fb814b56fa18b",
+        "dishes": [
+            {
+                "dish": "5c8a24a02f8fb814b56fa105",
+                "quantity": 3
+            },
+            {
+                "dish": "5c8a24a02f8fb814b56fa104",
+                "quantity": 1
+            },
+            {
+                "dish": "5c8a24a02f8fb814b56fa10A",
+                "quantity": 1
+            }
+        ],
+        "orderTime": "2023-05-06 00:00:00",
+        "orderScheduled": "2023-05-06 09:00:00",
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                -175.1208475481052,
+                84.27766721300424
+            ],
+            "address": "Random Address 13"
+        },
+        "isSelfCollection": true,
+        "isItDone": true
+    },
+    {
+        "user": "5c8a23c82f8fb814b56fa18d",
+        "dishes": [
+            {
+                "dish": "5c8a24a02f8fb814b56fa104",
+                "quantity": 1
+            },
+            {
+                "dish": "5c8a24a02f8fb814b56fa103",
+                "quantity": 1
+            },
+            {
+                "dish": "5c8a24a02f8fb814b56fa104",
+                "quantity": 2
+            }
+        ],
+        "orderTime": "2023-11-03 07:30:00",
+        "orderScheduled": "2023-11-03 09:00:00",
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                -103.32962263380254,
+                12.30678638767722
+            ],
+            "address": "Random Address 14"
+        },
+        "isSelfCollection": true,
+        "isItDone": true
+    },
+    {
+        "user": "5c8a1e1a2f8fb814b56fa182",
+        "dishes": [
+            {
+                "dish": "5c8a24a02f8fb814b56fa103",
+                "quantity": 2
+            },
+            {
+                "dish": "5c8a24a02f8fb814b56fa106",
+                "quantity": 1
+            }
+        ],
+        "orderTime": "2022-03-18 07:00:00",
+        "orderScheduled": "2022-03-18 09:00:00",
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                63.312364040081576,
+                -63.80861721105114
+            ],
+            "address": "Random Address 15"
+        },
+        "isSelfCollection": false,
+        "isItDone": true
+    }
+]

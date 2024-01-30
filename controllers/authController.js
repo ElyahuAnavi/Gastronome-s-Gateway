@@ -139,6 +139,31 @@ exports.protect = catchAsync(async (req, res, next) => {
   next();
 });
 
+exports.conditionalProtect = catchAsync(async (req, res, next) => {
+  if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+      const token = req.headers.authorization.split(' ')[1];
+
+      try {
+          // Verify the token
+          const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
+
+          // Check if user still exists
+          const currentUser = await User.findById(decoded.id);
+          if (!currentUser) {
+              req.user = null;
+          } else {
+              req.user = currentUser;
+          }
+      } catch (err) {
+          // Catch any JWT related errors here (like malformed JWT)
+          req.user = null;
+      }
+  }
+
+  // Proceed to the next middleware
+  next();
+});
+
 // Only for rendered pages, no errors!
 exports.isLoggedIn = async (req, res, next) => {
   if (req.cookies.jwt) {
@@ -169,6 +194,7 @@ exports.isLoggedIn = async (req, res, next) => {
   }
   next();
 };
+
 /* Middleware function that restricts access to certain routes based on the user's role.
  It takes in an array of roles as arguments and returns another middleware
  function that checks if the user's role is included in the provided roles array.

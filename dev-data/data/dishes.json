@@ -1,62 +1,72 @@
 [
-  {
-      "name": "Margherita Pizza",
-      "description": "Classic Margherita pizza with fresh mozzarella, basil, and a rich tomato sauce.",
-      "price": 12.99,
-      "inventory": 30
-  },
-  {
-      "name": "Spaghetti Carbonara",
-      "description": "Traditional Italian pasta with creamy sauce, pancetta, and Parmesan cheese.",
-      "price": 15.50,
-      "inventory": 25
-  },
-  {
-      "name": "Caesar Salad",
-      "description": "Crisp romaine lettuce, Parmesan cheese, croutons, and Caesar dressing.",
-      "price": 10.00,
-      "inventory": 35
-  },
-  {
-      "name": "Beef Burger",
-      "description": "Grilled beef patty with lettuce, tomato, cheese, and secret sauce.",
-      "price": 11.50,
-      "inventory": 20
-  },
-  {
-      "name": "Vegetable Stir Fry",
-      "description": "A mix of fresh vegetables stir-fried with a savory sauce and served over rice.",
-      "price": 13.99,
-      "inventory": 22
-  },
-  {
-      "name": "Chicken Tikka Masala",
-      "description": "Tender chicken in a creamy, spicy tomato sauce served with rice or naan.",
-      "price": 16.99,
-      "inventory": 15
-  },
-  {
-      "name": "Fish Tacos",
-      "description": "Grilled fish with cabbage slaw, avocado, and a tangy sauce in soft tortillas.",
-      "price": 14.50,
-      "inventory": 18
-  },
-  {
-      "name": "Mushroom Risotto",
-      "description": "Creamy risotto with sautéed mushrooms and a sprinkle of Parmesan cheese.",
-      "price": 17.00,
-      "inventory": 10
-  },
-  {
-      "name": "Pad Thai",
-      "description": "Stir-fried rice noodles with shrimp, peanuts, egg, and bean sprouts.",
-      "price": 14.00,
-      "inventory": 20
-  },
-  {
-      "name": "Apple Pie",
-      "description": "Classic apple pie with a flaky crust and a hint of cinnamon, served with vanilla ice cream.",
-      "price": 9.00,
-      "inventory": 25
-  }
+    {
+        "name": "Margherita Pizza",
+        "description": "Classic Margherita pizza with fresh mozzarella, basil, and a rich tomato sauce.",
+        "price": 12.99,
+        "inventory": 30,
+        "_id": "5c8a24a02f8fb814b56fa101"
+    },
+    {
+        "name": "Spaghetti Carbonara",
+        "description": "Traditional Italian pasta with creamy sauce, pancetta, and Parmesan cheese.",
+        "price": 15.5,
+        "inventory": 25,
+        "_id": "5c8a24a02f8fb814b56fa102"
+    },
+    {
+        "name": "Caesar Salad",
+        "description": "Crisp romaine lettuce, Parmesan cheese, croutons, and Caesar dressing.",
+        "price": 10.0,
+        "inventory": 35,
+        "_id": "5c8a24a02f8fb814b56fa103"
+    },
+    {
+        "name": "Beef Burger",
+        "description": "Grilled beef patty with lettuce, tomato, cheese, and secret sauce.",
+        "price": 11.5,
+        "inventory": 20,
+        "_id": "5c8a24a02f8fb814b56fa104"
+    },
+    {
+        "name": "Vegetable Stir Fry",
+        "description": "A mix of fresh vegetables stir-fried with a savory sauce and served over rice.",
+        "price": 13.99,
+        "inventory": 22,
+        "_id": "5c8a24a02f8fb814b56fa105"
+    },
+    {
+        "name": "Chicken Tikka Masala",
+        "description": "Tender chicken in a creamy, spicy tomato sauce served with rice or naan.",
+        "price": 16.99,
+        "inventory": 15,
+        "_id": "5c8a24a02f8fb814b56fa106"
+    },
+    {
+        "name": "Fish Tacos",
+        "description": "Grilled fish with cabbage slaw, avocado, and a tangy sauce in soft tortillas.",
+        "price": 14.5,
+        "inventory": 18,
+        "_id": "5c8a24a02f8fb814b56fa107"
+    },
+    {
+        "name": "Mushroom Risotto",
+        "description": "Creamy risotto with saut\u00e9ed mushrooms and a sprinkle of Parmesan cheese.",
+        "price": 17.0,
+        "inventory": 10,
+        "_id": "5c8a24a02f8fb814b56fa108"
+    },
+    {
+        "name": "Pad Thai",
+        "description": "Stir-fried rice noodles with shrimp, peanuts, egg, and bean sprouts.",
+        "price": 14.0,
+        "inventory": 20,
+        "_id": "5c8a24a02f8fb814b56fa109"
+    },
+    {
+        "name": "Apple Pie",
+        "description": "Classic apple pie with a flaky crust and a hint of cinnamon, served with vanilla ice cream.",
+        "price": 9.0,
+        "inventory": 25,
+        "_id": "5c8a24a02f8fb814b56fa10A"
+    }
 ]

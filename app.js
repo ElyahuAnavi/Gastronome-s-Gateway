@@ -14,6 +14,7 @@ const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
 const userRouter = require('./routes/userRoutes');
 const dishRouter = require('./routes/dishRoutes');
+const orderRouter = require('./routes/orderRoutes');
 
 
 const app = express();
@@ -68,14 +69,13 @@ app.use(
 // Test middleware to add a timestamp to the request object
 app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();
-  console.log(req.cookies);
-
   next();
 });
 
 // 2) ROUTES
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/dishes', dishRouter);
+app.use('/api/v1/orders', orderRouter);
 
 // 3) HANDLE UNHANDLED ROUTES
 app.all('*', (req, res, next) => {
