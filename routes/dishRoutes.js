@@ -24,7 +24,11 @@ router.route('/top-5-dishes').get(dishController.getTopDishes);
 router
   .route('/:id')
   .get(dishController.getDish)
-  .patch(dishController.updateDish)
+  .patch(
+    dishController.uploadDishImages,
+    dishController.resizeDishImages,
+    dishController.updateDish
+  )
   .delete(dishController.deleteDish);
 
 module.exports = router;

@@ -26,7 +26,12 @@ const dishSchema = new mongoose.Schema({
   orderCount: {
     type: Number,
     default: 0
-  }
+  },
+  imageCover: {
+    type: String,
+    required: [true, 'A tour must have a cover image']
+  },
+  images: [String],
 });
 
 const Dish = mongoose.model('Dish', dishSchema);
