@@ -1,6 +1,7 @@
 // models/dishModel.js
 
 const mongoose = require('mongoose');
+const slugify = require('slugify');
 
 const dishSchema = new mongoose.Schema({
   name: {
@@ -31,7 +32,17 @@ const dishSchema = new mongoose.Schema({
     type: String,
     required: [true, 'A tour must have a cover image']
   },
-  images: [String],
+  images: [String]
+});
+
+// Define a pre-save hook for the dishSchema
+dishSchema.pre('save', function(next) {
+  // Generate a slug from the dish name
+  // The slug is a URL-friendly version of the dish name,
+  // converted to lowercase using the 'slugify' function.
+  this.slug = slugify(this.name, { lower: true });
+
+  next();
 });
 
 const Dish = mongoose.model('Dish', dishSchema);
