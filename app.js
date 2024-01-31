@@ -20,7 +20,7 @@ const orderRouter = require('./routes/orderRoutes');
 
 const app = express();
 app.use(cors());
-
+app.set('trust proxy', true); 
 // 1) GLOBAL MIDDLEWARES
 // Serve static files from the 'public' directory
 app.use(express.static(path.join(__dirname, 'public')));
