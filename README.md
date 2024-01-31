@@ -67,6 +67,49 @@ Endpoints include:
 - `/users` for user management
 - `/dishes` for dish management
 - `/orders` for order management
+---
+
+## API Endpoints 🚏
+
+**Gastronomes Gateway** provides a set of RESTful endpoints for managing users, dishes, and orders within the system. Here's a quick guide to what each route does:
+
+### User Management 🧑‍🤝‍🧑
+
+- `POST /api/v1/users/signup` - Register a new user.
+- `POST /api/v1/users/login` - Log in an existing user.
+- `GET /api/v1/users/logout` - Log out the current user.
+- `POST /api/v1/users/forgotPassword` - Request a password reset link.
+- `PATCH /api/v1/users/resetPassword/:token` - Reset password using the token received via email.
+- `PATCH /api/v1/users/updateMyPassword` - Allows logged-in users to change their password.
+- `GET /api/v1/users/me` - Fetch the profile of the logged-in user.
+- `PATCH /api/v1/users/updateMe` - Update profile details of the logged-in user.
+- `DELETE /api/v1/users/deleteMe` - Soft-delete the logged-in user's account.
+- `GET /api/v1/users/` - (Admin only) Get a list of all users.
+- `POST /api/v1/users/` - (Admin only) Create a user.
+- `GET /api/v1/users/:id` - (Admin only) Get a specific user by ID.
+- `PATCH /api/v1/users/:id` - (Admin only) Update a user by ID.
+- `DELETE /api/v1/users/:id` - (Admin only) Delete a user by ID.
+
+### Dish Management 🍲
+
+- `GET /api/v1/dishes/` - Get a list of all dishes. Supports filtering, sorting, and pagination.
+- `POST /api/v1/dishes/` - (Admin only) Create a new dish.
+- `GET /api/v1/dishes/top-5-dishes` - Get the top 5 dishes based on ratings.
+- `GET /api/v1/dishes/:id` - Get a specific dish by ID.
+- `PATCH /api/v1/dishes/:id` - (Admin only) Update a dish by ID.
+- `DELETE /api/v1/dishes/:id` - (Admin only) Delete a dish by ID.
+
+### Order Management 📦
+
+- `POST /api/v1/orders/` - Create a new order.
+- `GET /api/v1/orders/` - Get all orders placed by the logged-in user.
+- `GET /api/v1/orders/all` - (Admin only) Get a list of all orders in the system.
+- `GET /api/v1/orders/top-customers` - (Admin only) Get top customers based on the number of orders placed.
+- `GET /api/v1/orders/top-day-last-month` - (Admin only) Get the day with the highest sales in the last month.
+- `GET /api/v1/orders/:id` - Get details of a specific order by ID.
+- `PATCH /api/v1/orders/:id` - (Admin only) Update the status of an order by ID.
+
+---
 
 ## Built With 🛠️
 
