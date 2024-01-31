@@ -8,16 +8,24 @@ const router = express.Router();
 
 router.use(authController.protect);
 
-router.route('/')
+router
+  .route('/')
   .post(orderController.createOrder)
   .get(orderController.getMyOrders);
 
 router.use(authController.restrictTo('admin'));
 
-router.route('/all')
-  .get(orderController.getAllOrders);
+router.route('/all').get(orderController.getAllOrders);
 
-router.route('/:id')
+router.get('/top-customers', orderController.getTopProfitableCustomers);
+
+router.get(
+  '/top-day-last-month',
+  orderController.getMostProfitableDayLastMonth
+);
+
+router
+  .route('/:id')
   .get(orderController.getOrder)
   .patch(orderController.updateOrderStatus);
 

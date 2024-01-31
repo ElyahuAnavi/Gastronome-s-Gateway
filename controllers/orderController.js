@@ -8,25 +8,29 @@ const factory = require('./handlerFactory');
 const User = require('../models/userModel');
 
 exports.createOrder = catchAsync(async (req, res, next) => {
-  console.log(req.body.user);
-  const doc = await Order.create(req.body);
-  if (doc) {
-    // Fetch user data
-    const user = await User.findById(req.body.User);
-    if (!user) return next(new AppError('User not found', 404));
+  // Create the order
+  const newOrder = await Order.create({
+    ...req.body,
+    user: req.user._id
+  });
 
-    // Send email to user after order creation
-    await sendEmail({
-      email: user.email,
-      subject: 'Your order was successfully received',
-      message: `Dear ${user.name}, your order has been successfully received.`
-    });
+  // Fetch user data
+  const user = await User.findById(req.user._id);
+  if (!user) {
+    return next(new AppError('User not found', 404));
   }
+
+  // Send email to user
+  await sendEmail({
+    email: user.email,
+    subject: 'Your order was successfully received',
+    message: `Dear ${user.name}, your order has been successfully received.`
+  });
 
   res.status(201).json({
     status: 'success',
     data: {
-      data: doc
+      order: newOrder
     }
   });
 });
@@ -96,7 +100,9 @@ exports.updateOrderStatus = catchAsync(async (req, res, next) => {
   await sendEmail({
     email: user.email,
     subject: 'Your order status has been updated',
-    message: `Dear ${user.name}, your order has been ${doc.isItDone ? 'successfully placed' : 'updated'}.`
+    message: `Dear ${user.name}, your order has been ${
+      doc.isItDone ? 'successfully placed' : 'updated'
+    }.`
   });
 
   res.status(200).json({
@@ -106,3 +112,100 @@ exports.updateOrderStatus = catchAsync(async (req, res, next) => {
     }
   });
 });
+
+exports.getTopProfitableCustomers = catchAsync(async (req, res, next) => {
+  try {
+    // Ensure the aggregate pipeline matches your database documents' structure.
+    const topCustomers = await Order.aggregate([
+      {
+        $match: { isItDone: true }
+      },
+      {
+        $group: {
+          _id: '$user',
+          totalSpent: { $sum: '$totalPrice' }
+        }
+      },
+      {
+        $sort: { totalSpent: -1 }
+      },
+      {
+        $limit: 5
+      },
+      {
+        $lookup: {
+          from: 'users', // Double-check this is the correct collection name
+          localField: '_id',
+          foreignField: '_id',
+          as: 'userDetails'
+        }
+      },
+      { $unwind: '$userDetails' },
+      {
+        $project: {
+          _id: 0,
+          totalSpent: 1,
+          'userDetails.name': 1,
+          'userDetails.email': 1
+        }
+      }
+    ]);
+
+    if (topCustomers.length === 0) {
+      return res.status(404).json({
+        status: 'fail',
+        message: 'No top customers found.'
+      });
+    }
+
+    res.status(200).json({
+      status: 'success',
+      data: {
+        topCustomers
+      }
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
+exports.getMostProfitableDayLastMonth = catchAsync(async (req, res, next) => {
+  const oneMonthAgo = new Date();
+  oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
+
+  const result = await Order.aggregate([
+    {
+      $match: {
+        orderTime: { $gte: oneMonthAgo },
+        isItDone: true, // Assuming you only want to consider completed orders
+      }
+    },
+    {
+      $group: {
+        _id: {
+          $dateToString: { format: "%Y-%m-%d", date: "$orderTime" }
+        },
+        totalIncome: { $sum: "$totalPrice" },
+        ordersCount: { $sum: 1 }
+      }
+    },
+    {
+      $sort: { totalIncome: -1 }
+    },
+    { $limit: 1 }
+  ]);
+
+  if (result.length === 0) {
+    return res.status(404).json({
+      status: 'fail',
+      message: 'No data found for the last month.'
+    });
+  }
+
+  res.status(200).json({
+    status: 'success',
+    data: result[0]
+  });
+});
+
+
