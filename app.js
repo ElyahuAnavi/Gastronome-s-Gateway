@@ -1,6 +1,7 @@
 // app.js
 const path = require('path');
 const express = require('express');
+const cors = require('cors');
 const morgan = require('morgan');
 const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
@@ -18,6 +19,7 @@ const orderRouter = require('./routes/orderRoutes');
 
 
 const app = express();
+app.use(cors());
 
 // 1) GLOBAL MIDDLEWARES
 // Serve static files from the 'public' directory
