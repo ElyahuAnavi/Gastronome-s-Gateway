@@ -30,7 +30,7 @@ const dishSchema = new mongoose.Schema({
   },
   imageCover: {
     type: String,
-    required: [true, 'A tour must have a cover image']
+    // required: [true, 'A dish must have a cover image']
   },
   images: [String]
 });

@@ -35,20 +35,20 @@ const orderSchema = new mongoose.Schema({
       now.setMinutes(now.getMinutes() + 1);
       return now;
     },
-    validate: {
-      validator: function(value) {
-        // Ensure that the scheduled delivery time is at between one hour from now and to six hours;
-        const oneHourLater = new Date();
-        oneHourLater.setHours(oneHourLater.getHours() + 1);
+    // validate: {
+    //   validator: function(value) {
+    //     // Ensure that the scheduled delivery time is at between one hour from now and to six hours;
+    //     const oneHourLater = new Date();
+    //     oneHourLater.setHours(oneHourLater.getHours() + 1);
 
-        const sixHoursLater = new Date();
-        sixHoursLater.setHours(sixHoursLater.getHours() + 6);
+    //     const sixHoursLater = new Date();
+    //     sixHoursLater.setHours(sixHoursLater.getHours() + 6);
 
-        return value >= oneHourLater && value <= sixHoursLater;
-      },
-      message:
-        'Scheduled delivery time must be at least one hour from the current time'
-    }
+    //     return value >= oneHourLater && value <= sixHoursLater;
+    //   },
+    //   message:
+    //     'Scheduled delivery time must be at least one hour from the current time'
+    // }
   },
   location: {
     type: {
