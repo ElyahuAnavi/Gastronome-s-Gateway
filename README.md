@@ -1,47 +1,130 @@
 
 ---
 
-# 🌟 Gastronome's Gateway: Restaurant Reservation System 🍴
+# 🌟 Gastronome's Gateway: Restaurant Reservation System 🍽️
+---
+Welcome to **Gastronomes Gateway**, a state-of-the-art restaurant reservation system designed to streamline the process of booking tables and managing orders. Built with Node.js and MongoDB, our platform ensures a seamless, efficient, and secure dining experience for both customers and restaurant staff.
 
-Welcome to the GitHub repository for **Gastronome's Gateway** 🚪, an innovative 🌈 restaurant reservation system designed to bridge the gap between gourmet enthusiasts 🍽️ and exquisite dining experiences 🥂. This application facilitates seamless interaction between customers and restaurant management, offering a sophisticated platform for making reservations, managing orders, and exploring culinary delights 🍲.
+## Getting Started 🚀
 
-## Features 🎉
+Follow these instructions to get your copy of the project up and running on your local machine for development and testing purposes.
 
-- **Dynamic Menu Display** 📜: Our system showcases a variety of dishes with detailed descriptions and pricing 💲, offering a tantalizing preview of what's on offer.
+### Prerequisites 📋
 
-- **Customer Ordering Interface** 📱: Customers can effortlessly browse the menu and place orders directly through the app, enhancing the dining experience with convenience and style 🌐.
+Before you dive in, make sure you have the following software installed:
 
-- **Restaurant Management Portal** 💼: A comprehensive interface for restaurant owners to oversee orders, update menus, and manage day-to-day operations with ease ✅.
+- [Node.js](https://nodejs.org/en/download/) (v10.0.0 or later)
+- [MongoDB](https://www.mongodb.com/try/download/community) (Follow the installation guide for your system)
+- [Git](https://git-scm.com/downloads) (Optional, for cloning the repository)
 
-- **Email Confirmation System** 📧: Integrated with `nodemailer`, Gastronome's Gateway sends out timely order confirmations and updates to customers, ensuring clear and consistent communication 💌.
+### Installation 🔧
 
-- **Sales Reporting and Inventory Management** 📊: Equipped with tools for generating sales reports and tracking inventory, aiding restaurant owners in making informed business decisions 📈.
+1. **Clone the repository:**
 
-- **Responsive Design** 🖥️📱: Designed to cater to both desktop and mobile users, ensuring a smooth and accessible user experience.
+```bash
+git clone https://github.com/elyahu631/Gastronome-s-Gateway.git
+cd gastronomes-gateway
+```
 
-## Technologies 💻
+2. **Install NPM packages:**
 
-- **Backend** 🔙: Built on Express.js, providing a robust and scalable server-side framework.
-- **Database** 🗄️: Powered by MongoDB, offering a flexible and powerful database solution.
-- **Frontend** 🖌️: Crafted with modern frontend technologies for an intuitive and engaging user interface.
-- **Email Service** 📤: Utilizes Nodemailer for reliable email delivery.
-- **Security** 🔒: Implements best practices in security to protect user data and transactions.
+```bash
+npm install
+```
 
-## Installation and Setup 🔧
+3. **Set up your environment variables:**
 
-Instructions for setting up and running Gastronome's Gateway on your local machine are provided in the [Installation Guide](/INSTALL.md).
+Create a `.env` file in the root directory and fill it with your environment-specific details:
 
-## Contributing 👐
+```dotenv
+DATABASE=mongodb+srv://your_mongodb_uri
+DATABASE_PASSWORD=your_database_password
+PORT=3000
+NODE_ENV=development
+EMAIL_HOST=smtp.your-email-service.com
+EMAIL_PORT=587
+EMAIL_USERNAME=your_email_username
+EMAIL_PASSWORD=your_email_password
+```
 
-We welcome contributions to Gastronome's Gateway! Please read our [Contributing Guidelines](/CONTRIBUTING.md) for details on how to submit pull requests, report issues, or suggest enhancements.
+4. **Start the server:**
+
+```bash
+node server.js
+```
+
+For development with live reload:
+
+```bash
+npm start
+```
+
+### Usage 📘
+
+After starting the server, you'll be able to access the API endpoints at `http://localhost:5500/api/v1/`. or `https://drab-pink-iguana.cyclic.app/api/v1/`
+
+Endpoints include:
+- `/users` for user management
+- `/dishes` for dish management
+- `/orders` for order management
+---
+
+## API Endpoints 🚏
+
+**Gastronomes Gateway** provides a set of RESTful endpoints for managing users, dishes, and orders within the system. Here's a quick guide to what each route does:
+
+### User Management 🧑‍🤝‍🧑
+
+- `POST /api/v1/users/signup` - Register a new user.
+- `POST /api/v1/users/login` - Log in an existing user.
+- `GET /api/v1/users/logout` - Log out the current user.
+- `POST /api/v1/users/forgotPassword` - Request a password reset link.
+- `PATCH /api/v1/users/resetPassword/:token` - Reset password using the token received via email.
+- `PATCH /api/v1/users/updateMyPassword` - Allows logged-in users to change their password.
+- `GET /api/v1/users/me` - Fetch the profile of the logged-in user.
+- `PATCH /api/v1/users/updateMe` - Update profile details of the logged-in user.
+- `DELETE /api/v1/users/deleteMe` - Soft-delete the logged-in user's account.
+- `GET /api/v1/users/` - (Admin only) Get a list of all users.
+- `POST /api/v1/users/` - (Admin only) Create a user.
+- `GET /api/v1/users/:id` - (Admin only) Get a specific user by ID.
+- `PATCH /api/v1/users/:id` - (Admin only) Update a user by ID.
+- `DELETE /api/v1/users/:id` - (Admin only) Delete a user by ID.
+
+### Dish Management 🍲
+
+- `GET /api/v1/dishes/` - Get a list of all dishes. Supports filtering, sorting, and pagination.
+- `POST /api/v1/dishes/` - (Admin only) Create a new dish.
+- `GET /api/v1/dishes/top-5-dishes` - Get the top 5 dishes based on ratings.
+- `GET /api/v1/dishes/:id` - Get a specific dish by ID.
+- `PATCH /api/v1/dishes/:id` - (Admin only) Update a dish by ID.
+- `DELETE /api/v1/dishes/:id` - (Admin only) Delete a dish by ID.
+
+### Order Management 📦
+
+- `POST /api/v1/orders/` - Create a new order.
+- `GET /api/v1/orders/` - Get all orders placed by the logged-in user.
+- `GET /api/v1/orders/all` - (Admin only) Get a list of all orders in the system.
+- `GET /api/v1/orders/top-customers` - (Admin only) Get top customers based on the number of orders placed.
+- `GET /api/v1/orders/top-day-last-month` - (Admin only) Get the day with the highest sales in the last month.
+- `GET /api/v1/orders/:id` - Get details of a specific order by ID.
+- `PATCH /api/v1/orders/:id` - (Admin only) Update the status of an order by ID.
+
+---
+
+## Built With 🛠️
+
+- [Node.js](https://nodejs.org/) - The server runtime
+- [Express](https://expressjs.com/) - Web application framework
+- [MongoDB](https://www.mongodb.com/) - Database
+- [Mongoose](https://mongoosejs.com/) - Object Data Modeling (ODM) library
+- [Nodemailer](https://nodemailer.com/about/) - Module for email sending
 
 ## License 📄
 
-Gastronome's Gateway is released under the [MIT License](/LICENSE).
+This project is licensed under the ISC License - see the [LICENSE.md](LICENSE.md) file for details.
 
-## Acknowledgments 👏
-
-Special thanks to all contributors and supporters who have made this project possible. We are continually striving to improve and expand Gastronome's Gateway, and your feedback and contributions are invaluable to us.
+## Acknowledgments 🎉
+- Special thanks to the Node.js community for the invaluable resources.
 
 ---
 
