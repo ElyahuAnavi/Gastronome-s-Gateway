@@ -140,24 +140,26 @@ exports.protect = catchAsync(async (req, res, next) => {
 });
 
 exports.conditionalProtect = catchAsync(async (req, res, next) => {
-  if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
-      const token = req.headers.authorization.split(' ')[1];
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.startsWith('Bearer')
+  ) {
+    const token = req.headers.authorization.split(' ')[1];
 
-      try {
-          // Verify the token
-          const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
+    try {
+      // Verify the token
+      const decoded = await promisify(jwt.verify)(
+        token,
+        process.env.JWT_SECRET
+      );
 
-          // Check if user still exists
-          const currentUser = await User.findById(decoded.id);
-          if (!currentUser) {
-              req.user = null;
-          } else {
-              req.user = currentUser;
-          }
-      } catch (err) {
-          // Catch any JWT related errors here (like malformed JWT)
-          req.user = null;
-      }
+      // Check if user still exists
+      const currentUser = await User.findById(decoded.id);
+      req.user = currentUser ? currentUser : null;
+    } catch (err) {
+      // Catch any JWT related errors here (like malformed JWT)
+      req.user = null;
+    }
   }
 
   // Proceed to the next middleware

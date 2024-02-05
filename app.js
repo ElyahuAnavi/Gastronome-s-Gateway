@@ -13,9 +13,8 @@ const cookieParser = require('cookie-parser');
 
 const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
-const userRouter = require('./routes/userRoutes');
-const dishRouter = require('./routes/dishRoutes');
-const orderRouter = require('./routes/orderRoutes');
+const allRoutes = require('./routes/index');
+
 
 
 const app = express();
@@ -75,9 +74,7 @@ app.use((req, res, next) => {
 });
 
 // 2) ROUTES
-app.use('/api/v1/users', userRouter);
-app.use('/api/v1/dishes', dishRouter);
-app.use('/api/v1/orders', orderRouter);
+app.use('/api/v1', allRoutes);
 
 // 3) HANDLE UNHANDLED ROUTES
 app.all('*', (req, res, next) => {

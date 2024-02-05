@@ -35,20 +35,20 @@ const orderSchema = new mongoose.Schema({
       now.setMinutes(now.getMinutes() + 1);
       return now;
     },
-    // validate: {
-    //   validator: function(value) {
-    //     // Ensure that the scheduled delivery time is at between one hour from now and to six hours;
-    //     const oneHourLater = new Date();
-    //     oneHourLater.setHours(oneHourLater.getHours() + 1);
+    validate: {
+      validator: function(value) {
+        // Ensure that the scheduled delivery time is at between one hour from now and to six hours;
+        const oneHourLater = new Date();
+        oneHourLater.setHours(oneHourLater.getHours() + 1);
 
-    //     const sixHoursLater = new Date();
-    //     sixHoursLater.setHours(sixHoursLater.getHours() + 6);
+        const sixHoursLater = new Date();
+        sixHoursLater.setHours(sixHoursLater.getHours() + 6);
 
-    //     return value >= oneHourLater && value <= sixHoursLater;
-    //   },
-    //   message:
-    //     'Scheduled delivery time must be at least one hour from the current time'
-    // }
+        return value >= oneHourLater && value <= sixHoursLater;
+      },
+      message:
+        'Scheduled delivery time must be at least one hour from the current time'
+    }
   },
   location: {
     type: {
@@ -83,9 +83,9 @@ const orderSchema = new mongoose.Schema({
   }
 });
 
-// orderSchema.index({ user: 1 });
-// orderSchema.index({ orderTime: -1 });
-// orderSchema.index({ isItDone: 1 });
+orderSchema.index({ user: 1 });
+orderSchema.index({ orderTime: -1 });
+orderSchema.index({ isItDone: 1 });
 
 orderSchema.virtual('customer', {
   ref: 'User',
@@ -106,7 +106,7 @@ orderSchema.pre('save', async function(next) {
 
     // Adjust inventory and calculate total price
     await Promise.all(
-      this.dishes.map(async (item) => {
+      this.dishes.map(async item => {
         const dish = await Dish.findById(item.dish);
         if (!dish) {
           return next(new Error(`Dish not found with id ${item.dish}`));
@@ -124,7 +124,7 @@ orderSchema.pre('save', async function(next) {
     );
 
     if (!this.isSelfCollection) {
-      totalPrice += 30; 
+      totalPrice += 30;
     }
 
     this.totalPrice = totalPrice;

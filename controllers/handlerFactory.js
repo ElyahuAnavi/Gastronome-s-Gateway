@@ -9,6 +9,7 @@ const APIFeatures = require('./../utils/apiFeatures');
  * @param {Model} Model - The Mongoose model to perform the deletion on.
  * @returns {Function} - The asynchronous function to handle the deletion.
  */
+
 exports.deleteOne = Model =>
   catchAsync(async (req, res, next) => {
     const doc = await Model.findByIdAndDelete(req.params.id);

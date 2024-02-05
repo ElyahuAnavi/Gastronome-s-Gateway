@@ -1,25 +1,19 @@
 // server.js
 
-const mongoose = require('mongoose');
 const dotenv = require('dotenv');
+const { connectDB } = require('./utils/database');
 
 // Handling uncaught exceptions at the top level
 process.on('uncaughtException', err => {
   console.error('UNCAUGHT EXCEPTION! 💥 Shutting down...');
-  console.error(err.name, err.message,err);
+  console.error(err.name, err.message, err);
   process.exit(1); // Exit process immediately
 });
 
 dotenv.config({ path: './config.env' });
 const app = require('./app');
 
-// Replacing the placeholder in the DB connection string with the actual password
-const DB = process.env.DATABASE.replace('<PASSWORD>', process.env.DATABASE_PASSWORD);
-
-// Connect to the MongoDB database
-mongoose
-  .connect(DB) 
-  .then(() => console.log('DB connection successful!'))
+connectDB(process.env.DATABASE);
 
 // Starting the server
 const port = process.env.PORT || 3000;
