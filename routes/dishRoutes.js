@@ -4,16 +4,19 @@ const express = require('express');
 const dishController = require('../controllers/dishController');
 const authController = require('../controllers/authController');
 
+const validateRequest = require('../utils/validateRequest');
+const dishValidationSchema  = require('../validations/dishValidation'); 
+
 const router = express.Router();
 
 // Publicly accessible routes
-
 router
   .route('/')
   .get(authController.conditionalProtect, dishController.getAllDishes)
   .post(
     authController.protect,
     authController.restrictTo('admin'),
+    validateRequest(dishValidationSchema),
     dishController.createDish
   );
 
@@ -27,6 +30,7 @@ router
   .patch(
     dishController.uploadDishImages,
     dishController.resizeDishImages,
+    validateRequest(dishValidationSchema),
     dishController.updateDish
   )
   .delete(dishController.deleteDish);

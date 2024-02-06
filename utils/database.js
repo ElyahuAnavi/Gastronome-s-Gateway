@@ -1,3 +1,5 @@
+// utils/database.js
+
 const mongoose = require('mongoose');
 
 exports.connectDB = async function(databaseUrl) {

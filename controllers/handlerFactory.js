@@ -1,23 +1,17 @@
 // controllers/handlerFactory.js
 
 const catchAsync = require('./../utils/catchAsync');
-const AppError = require('./../utils/appError');
 const APIFeatures = require('./../utils/apiFeatures');
+const DataAccess = require('../services/dataAccess.service');
 
 /**
- * Factory function to delete one document from the specified model.
- * @param {Model} Model - The Mongoose model to perform the deletion on.
+ * Delete one document from the specified model.
+ * @param {modelName} modelName - The name of the  model to perform the deletion on.
  * @returns {Function} - The asynchronous function to handle the deletion.
  */
-
-exports.deleteOne = Model =>
+exports.deleteOne = (modelName) =>
   catchAsync(async (req, res, next) => {
-    const doc = await Model.findByIdAndDelete(req.params.id);
-
-    // If no document found, return an error
-    if (!doc) {
-      return next(new AppError('No document found with that ID', 404));
-    }
+    await DataAccess.deleteById(modelName, req.params.id);
 
     // Send a success response with no data (204 No Content)
     res.status(204).json({
@@ -27,20 +21,14 @@ exports.deleteOne = Model =>
   });
 
 /**
- * Factory function to update one document in the specified model.
- * @param {Model} Model - The Mongoose model to perform the update on.
+ * Update one document in the specified model.
+ * @param {modelName} modelName - The name of the  model to perform the update on.
  * @returns {Function} - The asynchronous function to handle the update.
  */
-exports.updateOne = Model =>
+exports.updateOne = (modelName) =>
   catchAsync(async (req, res, next) => {
-    const doc = await Model.findByIdAndUpdate(req.params.id, req.body, {
-      new: true, // Return the updated document
-      runValidators: true // Run validation on update
-    });
+    const doc = await DataAccess.updateById(modelName, req.params.id, req.body);
 
-    if (!doc) {
-      return next(new AppError('No document found with that ID', 404)); //(404 Not Found)
-    }
 
     // Send a success response with the updated data (200 OK)
     res.status(200).json({
@@ -52,14 +40,13 @@ exports.updateOne = Model =>
   });
 
 /**
- * Factory function to create one document in the specified model.
- * @param {Model} Model - The Mongoose model to create a new document in.
+ * Create one document in the specified model.
+ * @param {modelName} modelName - The name of the  model to create a new document in.
  * @returns {Function} - The asynchronous function to handle the creation.
  */
-exports.createOne = Model =>
+exports.createOne = (modelName) =>
   catchAsync(async (req, res, next) => {
-    // Create a new document using the request body data
-    const doc = await Model.create(req.body);
+    const doc = await DataAccess.create(modelName, req.body);
 
     // Send a success response with the created data (201 Created)
     res.status(201).json({
@@ -71,24 +58,14 @@ exports.createOne = Model =>
   });
 
 /**
- * Factory function to get one document from the specified model.
- * @param {Model} Model - The Mongoose model to retrieve a document from.
+ * Get one document from the specified model.
+ * @param {modelName} modelName - The name of the  model to retrieve a document from.
  * @param {Object} popOptions - Options for populating related fields.
  * @returns {Function} - The asynchronous function to handle the retrieval.
  */
-exports.getOne = (Model, popOptions) =>
+exports.getOne = (modelName, popOptions) =>
   catchAsync(async (req, res, next) => {
-    let query = Model.findById(req.params.id);
-
-    // If popOptions provided, populate related fields
-    if (popOptions) query = query.populate(popOptions);
-
-    // Execute the query to retrieve the document
-    const doc = await query;
-
-    if (!doc) {
-      return next(new AppError('No document found with that ID', 404));
-    }
+    const doc = await DataAccess.findById(modelName, req.params.id, popOptions);
 
     res.status(200).json({
       status: 'success',
@@ -99,18 +76,13 @@ exports.getOne = (Model, popOptions) =>
   });
 
 /**
- * Factory function to get all documents from the specified model.
- * @param {Model} Model - The Mongoose model to retrieve documents from.
+ * Get all documents from the specified model.
+ * @param {modelName} modelName - The name of the  model to retrieve documents from.
  * @returns {Function} - The asynchronous function to handle the retrieval of all documents.
  */
-exports.getAll = Model =>
+exports.getAll = (modelName) =>
   catchAsync(async (req, res, next) => {
-    // To allow for nested GET reviews on tour (hack)
-    let filter = {};
-    if (req.params.tourId) filter = { tour: req.params.tourId };
-
-    // Apply filtering, sorting, field limiting, and pagination to the query
-    const features = new APIFeatures(Model.find(filter), req.query)
+    const features = new APIFeatures(DataAccess.getModel(modelName).find(), req.query)
       .filter()
       .sort()
       .limitFields()

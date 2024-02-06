@@ -6,6 +6,7 @@ const sendEmail = require('../utils/email');
 const AppError = require('../utils/appError');
 const factory = require('./handlerFactory');
 const User = require('../models/userModel');
+const APIFeatures = require('../utils/apiFeatures');
 
 exports.createOrder = catchAsync(async (req, res, next) => {
   // Create the order
@@ -35,14 +36,26 @@ exports.createOrder = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.getOrder = factory.getOne(Order);
-exports.updateOrder = factory.updateOne(Order);
-exports.deleteOrder = factory.deleteOne(Order);
+exports.getOrder = factory.getOne('Order');
+exports.updateOrder = factory.updateOne('Order');
+exports.deleteOrder = factory.deleteOne('Order');
 
 // View user's orders
 exports.getMyOrders = catchAsync(async (req, res, next) => {
-  const orders = await Order.find({ user: req.user._id }).sort('-orderTime');
+  // Apply filtering, sorting, limiting fields, and pagination to the query
+  // Initialize with a base query that finds orders belonging to the logged-in user
+  const features = new APIFeatures(
+    Order.find({ user: req.user._id }),
+    req.query
+  )
+    .sort()
+    .filter()
+    .limitFields()
+    .paginate();
 
+  const orders = await features.query;
+
+  // Respond with the user's orders
   res.status(200).json({
     status: 'success',
     results: orders.length,
@@ -52,14 +65,15 @@ exports.getMyOrders = catchAsync(async (req, res, next) => {
   });
 });
 
-
 // Restaurant owner's view of all orders
 exports.getAllOrders = catchAsync(async (req, res, next) => {
-  // You can add additional filters here if needed
-  const filter = {};
+  const features = new APIFeatures(Order.find(), req.query)
+    .filter()
+    .sort()
+    .limitFields()
+    .paginate();
 
-  // Add a sort condition to prioritize unfinished orders
-  const orders = await Order.find(filter).sort({ isItDone: 1, orderTime: 1 });
+  const orders = await features.query;
 
   res.status(200).json({
     status: 'success',
@@ -101,8 +115,7 @@ exports.updateOrderStatus = catchAsync(async (req, res, next) => {
   await sendEmail({
     email: user.email,
     subject: 'Your order status has been updated',
-    message: `Dear ${user.name}, your order has been ${
-      doc.isItDone ? 'successfully placed' : 'updated'
+    message: `Dear ${user.name}, your order has been ${doc.isItDone ? 'successfully placed' : 'updated'
     }.`
   });
 
@@ -184,9 +197,9 @@ exports.getMostProfitableDayLastMonth = catchAsync(async (req, res, next) => {
     {
       $group: {
         _id: {
-          $dateToString: { format: "%Y-%m-%d", date: "$orderTime" }
+          $dateToString: { format: '%Y-%m-%d', date: '$orderTime' }
         },
-        totalIncome: { $sum: "$totalPrice" },
+        totalIncome: { $sum: '$totalPrice' },
         ordersCount: { $sum: 1 }
       }
     },
@@ -208,5 +221,3 @@ exports.getMostProfitableDayLastMonth = catchAsync(async (req, res, next) => {
     data: result[0]
   });
 });
-
-

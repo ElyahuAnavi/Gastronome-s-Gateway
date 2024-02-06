@@ -5,7 +5,7 @@ const slugify = require('slugify');
 
 const dishSchema = new mongoose.Schema({
   name: {
-    type: String,
+       type: String,
     required: [true, 'A dish must have a name'],
     unique: true,
     trim: true
@@ -30,9 +30,12 @@ const dishSchema = new mongoose.Schema({
   },
   imageCover: {
     type: String,
-    // required: [true, 'A dish must have a cover image']
+    default: 'defaultCover.jpg', 
   },
-  images: [String]
+  images: {
+    type: [String],
+    default: ['defaultImage.jpg'], 
+  }
 });
 
 // Define a pre-save hook for the dishSchema
@@ -48,3 +51,7 @@ dishSchema.pre('save', function(next) {
 const Dish = mongoose.model('Dish', dishSchema);
 
 module.exports = Dish;
+
+
+
+

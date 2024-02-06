@@ -33,7 +33,6 @@ class APIFeatures {
       // Default sorting by creation date if no 'sort' parameter is provided
       this.query = this.query.sort('-createdAt');
     }
-
     return this;
   }
 

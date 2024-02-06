@@ -2,12 +2,11 @@
 
 const multer = require('multer');
 const sharp = require('sharp');
-
+const APIFeatures = require('../utils/apiFeatures');
 const Dish = require('./../models/dishModel');
 const Order = require('../models/orderModel');
 const factory = require('./handlerFactory');
 const catchAsync = require('../utils/catchAsync');
-
 const multerStorage = multer.memoryStorage();
 
 const multerFilter = (req, file, cb) => {
@@ -60,10 +59,15 @@ exports.resizeDishImages = catchAsync(async (req, res, next) => {
 });
 
 exports.getAllDishes = catchAsync(async (req, res, next) => {
-  let query = Dish.find();
+  // Initialize APIFeatures with Dish.find() and query from request
+  const features = new APIFeatures(Dish.find(), req.query)
+    .filter()
+    .sort()
+    .limitFields()
+    .paginate();
 
-  // Execute the query to retrieve the documents
-  const dishes = await query;
+  // Execute the enhanced query
+  const dishes = await features.query;
 
   // Filter the data based on user role
   const filteredDishes = dishes.map(dish => {
@@ -71,14 +75,12 @@ exports.getAllDishes = catchAsync(async (req, res, next) => {
       // Admins see all details (excluding __v)
       const { __v, ...dishDetails } = dish.toObject();
       return dishDetails;
-    } else {
-      // Normal users see limited details
-      return {
-        name: dish.name,
-        description: dish.description,
-        price: dish.price
-      };
     }
+    return {
+      name: dish.name,
+      description: dish.description,
+      price: dish.price
+    };
   });
 
   res.status(200).json({
@@ -88,15 +90,10 @@ exports.getAllDishes = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.getDish = factory.getOne(Dish);
-exports.createDish = factory.createOne(Dish);
-exports.updateDish = factory.updateOne(Dish);
-exports.deleteDish = factory.deleteOne(Dish);
-
-
-
-
-
+exports.getDish = factory.getOne('Dish');
+exports.createDish = factory.createOne('Dish');
+exports.updateDish = factory.updateOne('Dish');
+exports.deleteDish = factory.deleteOne('Dish');
 
 exports.getTopDishes = catchAsync(async (req, res, next) => {
   const topDishes = await Order.aggregate([
