@@ -71,7 +71,7 @@ exports.getAllDishes = catchAsync(async (req, res, next) => {
 
   // Filter the data based on user role
   const filteredDishes = dishes.map(dish => {
-    if (req.user && req.user.role === 'admin') {
+    if (req.user?.role === 'admin') {
       // Admins see all details (excluding __v)
       const { __v, ...dishDetails } = dish.toObject();
       return dishDetails;
