@@ -9,7 +9,7 @@ database, including creating, retrieving, updating, and deleting documents. */
 class DataAccess {
   
  /**
-  * The function is a constructor that ensures only one instance of the DataAccess class is created.
+  * Constructor that ensures only one instance of the DataAccess class is created.
   * @returns The `DataAccess.instance` is being returned.
   */
   constructor() {
@@ -20,7 +20,7 @@ class DataAccess {
   }
 
   /**
-   * The function returns the mongoose model for a given model name.
+   * Returns the mongoose model for a given model name.
    * @param modelName - The modelName parameter is a string that represents the name of the model you
    * want to retrieve from the mongoose library.
    * @returns the mongoose model with the specified modelName.
@@ -30,7 +30,7 @@ class DataAccess {
   }
 
   /**
-   * The function creates a new document in the specified model, hashing the password if provided and
+   * Creates a new document in the specified model, hashing the password if provided and
    * removing it from the returned document.
    * @param modelName - The modelName parameter is the name of the model that you want to create a
    * document for. It is used to retrieve the appropriate model from the database.
@@ -112,13 +112,19 @@ class DataAccess {
       throw new AppError('No document found with that ID', 404);
     }
   }
+
+  async aggregate(modelName, pipeline) {
+    const Model = this.getModel(modelName);
+    try {
+      const results = await Model.aggregate(pipeline);
+      return results;
+    } catch (error) {
+      throw new AppError('Aggregation failed', 500);
+    }
+  }
+
 }
 
-/* The line `const instance = new DataAccess();` creates a new instance of the `DataAccess` class and
-assigns it to the `instance` variable. This ensures that there is only one instance of the
-`DataAccess` class throughout the application. The `instance` variable is then frozen using
-`Object.freeze(instance);`, preventing any modifications to the instance. Finally, the `instance` is
-exported from the module, making it available for use in other parts of the application. */
 const instance = new DataAccess();
 Object.freeze(instance);
 

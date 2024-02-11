@@ -1,18 +1,13 @@
 const fs = require('fs');
 const mongoose = require('mongoose');
-const dotenv = require('dotenv');
+const { databaseURL } = require('../../config/vars'); 
 const Dish = require('./../../models/dishModel');
 const User = require('./../../models/userModel');
 const Order = require('./../../models/orderModel');
 
-dotenv.config({ path: './config.env' });
+// Database connection using centralized configuration
+mongoose.connect(databaseURL).then(() => console.log('DB connection successful!'));
 
-const DB = process.env.DATABASE.replace(
-  '<PASSWORD>',
-  process.env.DATABASE_PASSWORD
-);
-
-mongoose.connect(DB).then(() => console.log('DB connection successful!'));
 
 // READ JSON FILE
 const dishes = JSON.parse(fs.readFileSync(`${__dirname}/dishes.json`, 'utf-8'));

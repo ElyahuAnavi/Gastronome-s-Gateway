@@ -1,6 +1,7 @@
 // controllers/errorController.js
 
 const AppError = require('./../utils/appError');
+const { nodeEnv } = require('../config/vars');
 
 // Handles errors for invalid database casting (e.g., invalid ObjectId)
 const handleCastErrorDB = err => {
@@ -69,10 +70,10 @@ module.exports = (err, req, res, next) => {
   err.status = err.status || 'error';
 
   // Differentiate between development and production error handling
-  if (process.env.NODE_ENV === 'development') {
+  if (nodeEnv === 'development') {
     sendErrorDev(err, res);
-  } else if (process.env.NODE_ENV === 'production') {
-    let error = {...err };
+  } else if (nodeEnv === 'production') {
+    let error = { ...err };
 
     // Handle specific error types differently
     if (error.name === 'CastError') error = handleCastErrorDB(error);

@@ -1,7 +1,7 @@
 // server.js
 
-const dotenv = require('dotenv');
 const { connectDB } = require('./utils/database');
+const { port, databaseURL } = require('./config/vars'); // Adjust the path as needed
 
 // Handling uncaught exceptions at the top level
 process.on('uncaughtException', err => {
@@ -10,13 +10,11 @@ process.on('uncaughtException', err => {
   process.exit(1); // Exit process immediately
 });
 
-dotenv.config({ path: './config.env' });
 const app = require('./app');
 
-connectDB(process.env.DATABASE);
+connectDB(databaseURL);
 
 // Starting the server
-const port = process.env.PORT || 3000;
 const server = app.listen(port, () => {
   console.log(`App running on port ${port}...`);
 });

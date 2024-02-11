@@ -1,4 +1,5 @@
 // app.js
+const { nodeEnv } = require('./config/vars');
 const path = require('path');
 const express = require('express');
 const cors = require('cors');
@@ -25,7 +26,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(helmet());
 
 // Development logging using morgan
-if (process.env.NODE_ENV === 'development') {
+if (nodeEnv === 'development') {
   app.use(morgan('dev'));
 }
 

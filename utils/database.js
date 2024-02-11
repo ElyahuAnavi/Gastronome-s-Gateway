@@ -1,11 +1,9 @@
 // utils/database.js
 
 const mongoose = require('mongoose');
-
-exports.connectDB = async function(databaseUrl) {
-  const DB = databaseUrl.replace('<PASSWORD>', process.env.DATABASE_PASSWORD);
+exports.connectDB = async function(databaseURL) {
   try {
-    await mongoose.connect(DB);
+    await mongoose.connect(databaseURL);
     console.log('DB connection successful!');
   } catch (err) {
     console.error('DB connection failed.', err);
