@@ -1,7 +1,7 @@
-// services/dbService.js
+// utils/dataAccess.js
 
 const mongoose = require('mongoose');
-const AppError = require('../utils/appError');
+const AppError = require('./appError');
 const bcrypt = require('bcryptjs');
 
 /* The `DataAccess` class is a singleton class that provides methods for interacting with a MongoDB

@@ -2,7 +2,7 @@
 
 const catchAsync = require('./../utils/catchAsync');
 const APIFeatures = require('./../utils/apiFeatures');
-const DataAccess = require('../dataAccess/mainDataAccess');
+const DataAccess = require('../utils/dataAccess');
 
 /**
  * Delete one document from the specified model.

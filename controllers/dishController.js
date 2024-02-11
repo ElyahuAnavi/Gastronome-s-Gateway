@@ -8,6 +8,7 @@ const Order = require('../models/orderModel');
 const factory = require('./handlerFactory');
 const catchAsync = require('../utils/catchAsync');
 const multerStorage = multer.memoryStorage();
+const DataAccess = require('../utils/dataAccess');
 
 const multerFilter = (req, file, cb) => {
   if (file.mimetype.startsWith('image')) {
@@ -59,8 +60,8 @@ exports.resizeDishImages = catchAsync(async (req, res, next) => {
 });
 
 exports.getAllDishes = catchAsync(async (req, res, next) => {
-  // Initialize APIFeatures with Dish.find() and query from request
-  const features = new APIFeatures(Dish.find(), req.query)
+  // Initialize APIFeatures with DataAccess.getModel('Dish').find() and query from request
+  const features = new APIFeatures(DataAccess.getModel('Dish').find(), req.query)
     .filter()
     .sort()
     .limitFields()
@@ -89,6 +90,7 @@ exports.getAllDishes = catchAsync(async (req, res, next) => {
     data: { dishes: filteredDishes }
   });
 });
+
 
 exports.getDish = factory.getOne('Dish');
 exports.createDish = factory.createOne('Dish');
