@@ -69,6 +69,11 @@ app.use((req, res, next) => {
   next();
 });
 
+const loadModels = require('./utils/modelLoader');
+
+const modelsPath = path.join(__dirname, 'models');
+loadModels(modelsPath);
+
 // 2) ROUTES
 app.use('/api/v1', allRoutes);
 

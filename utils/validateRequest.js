@@ -1,5 +1,4 @@
 // utils/validateRequest.js
-const Joi = require('joi');
 
 // Middleware for validating request data with a Joi schema
 const validateRequest = (schema) => (req, res, next) => {

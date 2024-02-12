@@ -1,104 +1,46 @@
 // controllers/dishController.js
 
-const sharp = require('sharp');
-const APIFeatures = require('../utils/apiFeatures');
 const { upload, resizeImages } = require('../config/multerConfig');
+const {
+  getDishesWithFilters,
+  getTopDishes
+} = require('../services/dishService');
+const { sendResponse } = require('../utils/responseHandler');
 const factory = require('./handlerFactory');
 const catchAsync = require('../utils/catchAsync');
-const DataAccess = require('../utils/dataAccess');
 
+const dishModel = 'Dish';
 
-exports.uploadDishImages = upload([
-  { name: 'imageCover', maxCount: 1 },
-  { name: 'images', maxCount: 3 }
-], true); 
+exports.uploadDishImages = upload(
+  [
+    { name: 'imageCover', maxCount: 1 },
+    { name: 'images', maxCount: 3 }
+  ],
+  true
+);
 
 exports.resizeDishImages = resizeImages([
-  { name: 'imageCover', width: 2000, height: 1333, quality: 90, format: 'jpeg' },
+  {
+    name: 'imageCover',
+    width: 2000,
+    height: 1333,
+    quality: 90,
+    format: 'jpeg'
+  },
   { name: 'images', width: 2000, height: 1333, quality: 90, format: 'jpeg' }
 ]);
 
+exports.getDish = factory.getOne(dishModel);
+exports.createDish = factory.createOne(dishModel);
+exports.updateDish = factory.updateOne(dishModel);
+exports.deleteDish = factory.deleteOne(dishModel);
+
 exports.getAllDishes = catchAsync(async (req, res, next) => {
-  const features = new APIFeatures(DataAccess.getModel('Dish').find(), req.query)
-    .filter()
-    .sort()
-    .limitFields()
-    .paginate();
-
-  // Execute the enhanced query
-  const dishes = await features.query;
-
-  // Filter the data based on user role
-  const filteredDishes = dishes.map(dish => {
-    if (req.user?.role === 'admin') {
-      // Admins see all details (excluding __v)
-      const { __v, ...dishDetails } = dish.toObject();
-      return dishDetails;
-    }
-    return {
-      name: dish.name,
-      description: dish.description,
-      price: dish.price
-    };
-  });
-
-  res.status(200).json({
-    status: 'success',
-    results: filteredDishes.length,
-    data: { dishes: filteredDishes }
-  });
+  const filteredDishes = await getDishesWithFilters(req.query, req.user?.role);
+  sendResponse(res, 200, filteredDishes, { dishes: filteredDishes });
 });
 
-exports.getDish = factory.getOne('Dish');
-exports.createDish = factory.createOne('Dish');
-exports.updateDish = factory.updateOne('Dish');
-exports.deleteDish = factory.deleteOne('Dish');
-
 exports.getTopDishes = catchAsync(async (req, res, next) => {
-  const pipeline = [
-    // Deconstruct the dishes array to treat each dish as a separate document
-    { $unwind: '$dishes' },
-    // Group by dish and calculate total orders and total quantity ordered
-    {
-      $group: {
-        _id: '$dishes.dish',
-        orderCount: { $sum: 1 },// Count of how many times the dish was ordered
-        totalQuantity: { $sum: '$dishes.quantity' }// Total quantity of the dish ordered
-      }
-    },
-    // Sort by the most frequently ordered dishes
-    { $sort: { orderCount: -1 } },
-    { $limit: 5 },
-    // Look up dish details from the dishes collection
-    {
-      $lookup: {
-        from: 'dishes',
-        localField: '_id',
-        foreignField: '_id',
-        as: 'dishDetails'
-      }
-    },
-    // Unwind the result from the lookup to normalize the data
-    { $unwind: '$dishDetails' },
-    // Optionally, project to format the output
-    {
-      $project: {
-        name: '$dishDetails.name',
-        description: '$dishDetails.description',
-        price: '$dishDetails.price',
-        orderCount: 1,
-        totalQuantity: 1
-      }
-    }
-  ];
-
-  const topDishes = await DataAccess.aggregate('Order', pipeline);
-
-  res.status(200).json({
-    status: 'success',
-    results: topDishes.length,
-    data: {
-      dishes: topDishes
-    }
-  });
+  const topDishes = await getTopDishes();
+  sendResponse(res, 200, topDishes, { dishes: topDishes });
 });
