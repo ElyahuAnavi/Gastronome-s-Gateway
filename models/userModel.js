@@ -32,13 +32,19 @@ const userSchema = new mongoose.Schema({
   passwordConfirm: {
     type: String,
     required: [true, 'Please confirm your password'],
-    validate: {
-      // Custom validator to check if password matches passwordConfirm
-      validator: function(el) {
-        return el === this.password;
-      },
-      message: 'Passwords are not the same!'
-    }
+    // validate: {
+    //   // Custom validator to check if password matches passwordConfirm
+    //   validator: function(el) {
+    //     console.log('====================================');
+    //     console.log(el);
+    //     console.log('====================================');
+    //     console.log('====================================');
+    //     console.log(this.password);
+    //     console.log('====================================');
+    //     return el === this.password;
+    //   },
+    //   message: 'Passwords are not the same!'
+    // }
   },
   passwordChangedAt: Date,
   passwordResetToken: String,

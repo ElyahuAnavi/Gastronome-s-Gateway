@@ -1,42 +1,66 @@
 // routes/userRoutes.js
 
 const express = require('express');
-const userController = require('./../controllers/userController');
-const authController = require('./../controllers/authController');
-
+const {
+  getMe,
+  getUser,
+  updateMe,
+  deleteUser,
+  getAllUsers,
+  createUser,
+  updateUser,
+} = require('./../controllers/userController');
+// Destructuring authController methods
+const {
+  signup,
+  login,
+  logout,
+  forgotPassword,
+  resetPassword,
+  updatePassword,
+  protect,
+  restrictTo
+} = require('./../controllers/authController');
+const {
+  registerValidationSchema,
+  updateUserValidationSchema,
+  changePasswordValidationSchema,
+  resetPasswordValidationSchema
+} = require('../validations/userValidation');
+const validateRequest = require('../utils/validateRequest');
 const router = express.Router();
 
 // Routes for user signup, login, logout, password reset, and update
-router.post('/signup', authController.signup);
-router.post('/login', authController.login);
-router.get('/logout', authController.logout);
+router.post('/signup', validateRequest(registerValidationSchema), signup);
+router.post('/login', login);
+router.get('/logout', logout);
 
-router.post('/forgotPassword', authController.forgotPassword);
-router.patch('/resetPassword/:token', authController.resetPassword);
+router.post('/forgotPassword', forgotPassword);
+router.patch('/resetPassword/:token', validateRequest(resetPasswordValidationSchema), resetPassword);
 
 // Protect all routes after this middleware (authentication required for subsequent routes)
-router.use(authController.protect);
+router.use(protect);
 
 // Routes for updating user's password and managing user's own profile
-router.patch('/updateMyPassword', authController.updatePassword);
-router.get('/me', userController.getMe, userController.getUser);
-router.patch('/updateMe', authController.protect, userController.updateMe);
-router.delete('/deleteMe', authController.protect, userController.deleteMe);
+router.patch('/updateMyPassword', validateRequest(changePasswordValidationSchema), updatePassword);
+router.get('/me', getMe, getUser);
+router.patch('/updateMe', validateRequest(updateUserValidationSchema), protect, updateMe);
+router.delete('/deleteMe', protect, deleteMe);
 
 // Restrict following routes to admin users
-router.use(authController.restrictTo('admin'));
+router.use(restrictTo('admin'));
 
 // Routes for managing all users
 router
   .route('/')
-  .get(userController.getAllUsers)
-  .post(userController.createUser);
+  .get(getAllUsers)
+  .post(createUser);
 
 // Routes for getting, updating, and deleting a specific user by ID
 router
   .route('/:id')
-  .get(userController.getUser)
-  .patch(userController.updateUser)
-  .delete(userController.deleteUser);
+  .get(getUser)
+  .patch(updateUser)
+  .delete(deleteUser);
 
 module.exports = router;

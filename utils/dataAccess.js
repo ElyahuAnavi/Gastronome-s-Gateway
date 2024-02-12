@@ -120,7 +120,7 @@ class DataAccess {
    */
   async findByEmail(modelName, email) {
     const Model = this.getModel(modelName);
-    const document = await Model.findOne({ email });
+    const document = await Model.findOne({ email }).select('+password');
     return document;
   }
 
@@ -151,33 +151,33 @@ class DataAccess {
 
   // In DataAccess class
 
-/**
- * Resets a user's password, handling hashing and invalidating any reset token.
- * @param email - The user's email to identify the account.
- * @param newPassword - The new password to be set.
- */
-async resetUserPassword(email, newPassword) {
-  const Model = this.getModel('User');
-  const hashedPassword = await bcrypt.hash(newPassword, 12);
+  /**
+   * Resets a user's password, handling hashing and invalidating any reset token.
+   * @param email - The user's email to identify the account.
+   * @param newPassword - The new password to be set.
+   */
+  async resetUserPassword(email, newPassword) {
+    const Model = this.getModel('User');
+    const hashedPassword = await bcrypt.hash(newPassword, 12);
 
-  // Assume the user model has fields for reset tokens that need to be cleared upon password reset
-  const updatedUser = await Model.findOneAndUpdate(
-    { email, passwordResetToken: { $exists: true }, passwordResetExpires: { $gt: Date.now() } },
-    {
-      password: hashedPassword,
-      passwordResetToken: undefined, // Clear the reset token
-      passwordResetExpires: undefined, // Clear the token expiry
-      passwordChangedAt: Date.now() // Optionally track when the password was changed
-    },
-    { new: true }
-  );
+    // Assume the user model has fields for reset tokens that need to be cleared upon password reset
+    const updatedUser = await Model.findOneAndUpdate(
+      { email, passwordResetToken: { $exists: true }, passwordResetExpires: { $gt: Date.now() } },
+      {
+        password: hashedPassword,
+        passwordResetToken: undefined, // Clear the reset token
+        passwordResetExpires: undefined, // Clear the token expiry
+        passwordChangedAt: Date.now() // Optionally track when the password was changed
+      },
+      { new: true }
+    );
 
-  if (!updatedUser) {
-    throw new AppError('No user found with that email or token is invalid', 404);
+    if (!updatedUser) {
+      throw new AppError('No user found with that email or token is invalid', 404);
+    }
+
+    return updatedUser;
   }
-
-  return updatedUser;
-}
 
   /**
    * Generates a password reset token for a user and updates the user document.
@@ -196,6 +196,25 @@ async resetUserPassword(email, newPassword) {
 
     return resetToken; // You may return the reset token for email sending purposes
   }
+  /**
+   * Generates a password reset token for a user and updates the user document.
+   * @param email - The user's email address.
+   * @returns The reset token or throws an error if the user is not found.
+   */
+
+  async generatePasswordResetToken(email) {
+    const Model = this.getModel('User');
+    const user = await Model.findOne({ email });
+    if (!user) {
+      throw new AppError('No user found with that email', 404);
+    }
+
+    const resetToken = user.createPasswordResetToken(); 
+    await user.save({ validateBeforeSave: false }); 
+
+    return resetToken; 
+  }
+
 
   async aggregate(modelName, pipeline) {
     const Model = this.getModel(modelName);

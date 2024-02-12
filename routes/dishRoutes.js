@@ -1,38 +1,46 @@
 // routes/dishRoutes.js
 
 const express = require('express');
-const dishController = require('../controllers/dishController');
-const authController = require('../controllers/authController');
+const {
+  getAllDishes,
+  createDish,
+  getTopDishes,
+  getDish,
+  uploadDishImages,
+  resizeDishImages,
+  updateDish,
+  deleteDish
+} = require('../controllers/dishController'); 
+const { conditionalProtect, protect, restrictTo } = require('../controllers/authController');
 
 const validateRequest = require('../utils/validateRequest');
-const dishValidationSchema  = require('../validations/dishValidation'); 
+const dishValidationSchema = require('../validations/dishValidation');
 
 const router = express.Router();
 
-// Publicly accessible routes
 router
   .route('/')
-  .get(authController.conditionalProtect, dishController.getAllDishes)
+  .get(conditionalProtect, getAllDishes)
   .post(
-    authController.protect,
-    authController.restrictTo('admin'),
+    protect,
+    restrictTo('admin'),
     validateRequest(dishValidationSchema),
-    dishController.createDish
+    createDish
   );
 
-router.use(authController.protect, authController.restrictTo('admin'));
+router.use(protect, restrictTo('admin'));
 
-router.route('/top-5-dishes').get(dishController.getTopDishes);
+router.route('/top-5-dishes').get(getTopDishes);
 
 router
   .route('/:id')
-  .get(dishController.getDish)
+  .get(getDish)
   .patch(
-    dishController.uploadDishImages,
-    dishController.resizeDishImages,
+    uploadDishImages,
+    resizeDishImages,
     validateRequest(dishValidationSchema),
-    dishController.updateDish
+    updateDish
   )
-  .delete(dishController.deleteDish);
+  .delete(deleteDish);
 
 module.exports = router;
