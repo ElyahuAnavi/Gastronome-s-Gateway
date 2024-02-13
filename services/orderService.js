@@ -2,7 +2,7 @@
 
 const DataAccess = require('../utils/dataAccess');
 const sendEmail = require('../utils/email');
-const { executeQueryWithFeatures } = require('../controllers/helperController');
+const { executeQueryWithFeatures,ensureFound } = require('./helperService');
 
 const orderModel = 'Order';
 const userModel = 'User';

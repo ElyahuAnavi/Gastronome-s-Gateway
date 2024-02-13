@@ -1,7 +1,7 @@
 // services/dishService.js
 
 const DataAccess = require('../utils/dataAccess');
-const { executeQueryWithFeatures } = require('../controllers/helperController');
+const { executeQueryWithFeatures } = require('./helperService');
 
 const dishModel = 'Dish';
 const orderModel = 'Order';

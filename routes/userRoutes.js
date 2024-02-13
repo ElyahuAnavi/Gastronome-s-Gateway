@@ -1,6 +1,7 @@
 // routes/userRoutes.js
 
 const express = require('express');
+
 const {
   getMe,
   getUser,
@@ -9,8 +10,9 @@ const {
   getAllUsers,
   createUser,
   updateUser,
+  deleteMe
 } = require('./../controllers/userController');
-// Destructuring authController methods
+
 const {
   signup,
   login,
@@ -19,14 +21,15 @@ const {
   resetPassword,
   updatePassword,
   protect,
-  restrictTo
+  restrictTo,
 } = require('./../controllers/authController');
+
 const {
   registerValidationSchema,
   updateUserValidationSchema,
   changePasswordValidationSchema,
-  resetPasswordValidationSchema
 } = require('../validations/userValidation');
+
 const validateRequest = require('../utils/validateRequest');
 const router = express.Router();
 
@@ -36,7 +39,7 @@ router.post('/login', login);
 router.get('/logout', logout);
 
 router.post('/forgotPassword', forgotPassword);
-router.patch('/resetPassword/:token', validateRequest(resetPasswordValidationSchema), resetPassword);
+router.patch('/resetPassword/:token', resetPassword);
 
 // Protect all routes after this middleware (authentication required for subsequent routes)
 router.use(protect);

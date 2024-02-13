@@ -49,28 +49,14 @@ const updateUserValidationSchema = Joi.object({
 }).min(1);
 
 const changePasswordValidationSchema = Joi.object({
-  currentPassword: Joi.string().required().messages({
+  passwordCurrent: Joi.string().required().messages({
     'any.required': 'Current password is required',
   }),
-  newPassword: Joi.string().min(8).required().messages({
+  password: Joi.string().min(8).required().messages({
     'string.min': 'New password must be at least 8 characters',
     'any.required': 'New password is required',
   }),
-  confirmNewPassword: Joi.any().equal(Joi.ref('newPassword')).required().messages({
-    'any.only': 'Passwords do not match',
-    'any.required': 'Password confirmation is required',
-  }),
-});
-
-const resetPasswordValidationSchema = Joi.object({
-  token: Joi.string().required().messages({
-    'any.required': 'Token is required',
-  }),
-  newPassword: Joi.string().min(8).required().messages({
-    'string.min': 'New password must be at least 8 characters',
-    'any.required': 'New password is required',
-  }),
-  confirmNewPassword: Joi.any().equal(Joi.ref('newPassword')).required().messages({
+  passwordConfirm: Joi.any().equal(Joi.ref('password')).required().messages({
     'any.only': 'Passwords do not match',
     'any.required': 'Password confirmation is required',
   }),
@@ -79,6 +65,5 @@ const resetPasswordValidationSchema = Joi.object({
 module.exports = {
   registerValidationSchema,
   updateUserValidationSchema,
-  changePasswordValidationSchema,
-  resetPasswordValidationSchema,
+  changePasswordValidationSchema
 };

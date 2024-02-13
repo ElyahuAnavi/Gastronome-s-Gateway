@@ -39,6 +39,6 @@ router.get(
 router
   .route('/:id')
   .get(getOrder)
-  .patch(validateRequest(orderValidationSchema), updateOrderStatus);
+  .patch(updateOrderStatus)
 
 module.exports = router;

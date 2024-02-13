@@ -31,20 +31,7 @@ const userSchema = new mongoose.Schema({
   },
   passwordConfirm: {
     type: String,
-    required: [true, 'Please confirm your password'],
-    // validate: {
-    //   // Custom validator to check if password matches passwordConfirm
-    //   validator: function(el) {
-    //     console.log('====================================');
-    //     console.log(el);
-    //     console.log('====================================');
-    //     console.log('====================================');
-    //     console.log(this.password);
-    //     console.log('====================================');
-    //     return el === this.password;
-    //   },
-    //   message: 'Passwords are not the same!'
-    // }
+    required: [true, 'Please confirm your password']
   },
   passwordChangedAt: Date,
   passwordResetToken: String,

@@ -45,7 +45,7 @@ class DataAccess {
     }
     const document = await Model.create(data);
     if (document.password) {
-      document.password = undefined; // Ensure the password is not returned
+      document.password = undefined; 
     }
     return document;
   }
@@ -111,110 +111,6 @@ class DataAccess {
       throw new AppError('No document found with that ID', 404);
     }
   }
-
-  /**
-   * Finds a document by its email in a specified model.
-   * @param modelName - Name of the model.
-   * @param email - Email to find.
-   * @returns The document matching the email.
-   */
-  async findByEmail(modelName, email) {
-    const Model = this.getModel(modelName);
-    const document = await Model.findOne({ email }).select('+password');
-    return document;
-  }
-
-  /**
-   * Compares the provided password with the hashed password stored in the database.
-   * @param candidatePassword - The password provided by the user.
-   * @param userPassword - The hashed password stored in the database.
-   * @returns A boolean indicating whether the passwords match.
-   */
-  async comparePassword(candidatePassword, userPassword) {
-    return await bcrypt.compare(candidatePassword, userPassword);
-  }
-
-  /**
-   * Updates a user's password and related fields.
-   * @param modelName - The name of the user model.
-   * @param userId - The user's ID.
-   * @param newPassword - The new password to be hashed and stored.
-   */
-  async updatePassword(modelName, userId, newPassword) {
-    const Model = this.getModel(modelName);
-    const hashedPassword = await bcrypt.hash(newPassword, 12);
-    await Model.findByIdAndUpdate(userId, {
-      password: hashedPassword,
-      passwordChangedAt: Date.now()
-    });
-  }
-
-  // In DataAccess class
-
-  /**
-   * Resets a user's password, handling hashing and invalidating any reset token.
-   * @param email - The user's email to identify the account.
-   * @param newPassword - The new password to be set.
-   */
-  async resetUserPassword(email, newPassword) {
-    const Model = this.getModel('User');
-    const hashedPassword = await bcrypt.hash(newPassword, 12);
-
-    // Assume the user model has fields for reset tokens that need to be cleared upon password reset
-    const updatedUser = await Model.findOneAndUpdate(
-      { email, passwordResetToken: { $exists: true }, passwordResetExpires: { $gt: Date.now() } },
-      {
-        password: hashedPassword,
-        passwordResetToken: undefined, // Clear the reset token
-        passwordResetExpires: undefined, // Clear the token expiry
-        passwordChangedAt: Date.now() // Optionally track when the password was changed
-      },
-      { new: true }
-    );
-
-    if (!updatedUser) {
-      throw new AppError('No user found with that email or token is invalid', 404);
-    }
-
-    return updatedUser;
-  }
-
-  /**
-   * Generates a password reset token for a user and updates the user document.
-   * @param email - The user's email address.
-   * @returns The reset token or throws an error if the user is not found.
-   */
-  async generatePasswordResetToken(email) {
-    const Model = this.getModel('User');
-    const user = await Model.findOne({ email });
-    if (!user) {
-      throw new AppError('No user found with that email', 404);
-    }
-
-    const resetToken = user.createPasswordResetToken(); // Assuming this method exists on the user model
-    await user.save({ validateBeforeSave: false }); // Save the user with the new token and expiration
-
-    return resetToken; // You may return the reset token for email sending purposes
-  }
-  /**
-   * Generates a password reset token for a user and updates the user document.
-   * @param email - The user's email address.
-   * @returns The reset token or throws an error if the user is not found.
-   */
-
-  async generatePasswordResetToken(email) {
-    const Model = this.getModel('User');
-    const user = await Model.findOne({ email });
-    if (!user) {
-      throw new AppError('No user found with that email', 404);
-    }
-
-    const resetToken = user.createPasswordResetToken(); 
-    await user.save({ validateBeforeSave: false }); 
-
-    return resetToken; 
-  }
-
 
   async aggregate(modelName, pipeline) {
     const Model = this.getModel(modelName);
