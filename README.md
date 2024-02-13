@@ -50,13 +50,13 @@ EMAIL_PASSWORD=your_email_password
 4. **Start the server:**
 
 ```bash
-node server.js
+npm start
 ```
 
 For development with live reload:
 
 ```bash
-npm start
+npm run dev
 ```
 
 ### Usage 📘
