@@ -31,7 +31,7 @@ const createTokenSendResponse = (user, statusCode, res) => {
 
 // Extract token from request
 const extractToken = (req) => {
-  if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+  if (req.headers.authorization?.startsWith('Bearer')) {
     return req.headers.authorization.split(' ')[1];
   } else if (req.cookies.jwt) {
     return req.cookies.jwt;

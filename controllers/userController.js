@@ -1,8 +1,8 @@
 // controllers/userController.js
 
 const catchAsync = require('./../utils/catchAsync');
-const factory = require('./handlerFactory');
-
+const { getOne, getAll, updateOne, deleteOne} = require('./handlerFactory');
+const {deactivateUser, updateUserDetails } = require('../services/userService');
 const userModel = 'User';
 
 // get the current user's profile
@@ -13,7 +13,7 @@ exports.getMe = (req, res, next) => {
 
 // Update the current user's information
 exports.updateMe = catchAsync(async (req, res) => {
-  const updatedUser = await userService.updateUserDetails(
+  const updatedUser = await updateUserDetails(
     req.user.id,
     req.body
   );
@@ -27,7 +27,7 @@ exports.updateMe = catchAsync(async (req, res) => {
 
 // Deactivate (soft delete) the current user
 exports.deleteMe = catchAsync(async (req, res) => {
-  await userService.deactivateUser(req.user.id);
+  await deactivateUser(req.user.id);
   res.status(204).json({
       status: 'success',
       data: null
@@ -41,7 +41,7 @@ exports.createUser = (req, res) => {
   });
 };
 
-exports.getUser = factory.getOne(userModel);
-exports.getAllUsers = factory.getAll(userModel);
-exports.updateUser = factory.updateOne(userModel);
-exports.deleteUser = factory.deleteOne(userModel);
+exports.getUser = getOne(userModel);
+exports.getAllUsers = getAll(userModel);
+exports.updateUser = updateOne(userModel);
+exports.deleteUser = deleteOne(userModel);

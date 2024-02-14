@@ -1,7 +1,7 @@
 // controllers/orderControler.js
 
 const catchAsync = require('../utils/catchAsync');
-const factory = require('./handlerFactory');
+const { getOne, updateOne, deleteOne} = require('./handlerFactory');
 const {
   createOrder,
   getOrdersByUser,
@@ -14,9 +14,9 @@ const {
 
 const orderModel = 'Order';
 
-exports.getOrder = factory.getOne(orderModel);
-exports.updateOrder = factory.updateOne(orderModel);
-exports.deleteOrder = factory.deleteOne(orderModel);
+exports.getOrder = getOne(orderModel);
+exports.updateOrder = updateOne(orderModel);
+exports.deleteOrder = deleteOne(orderModel);
 
 exports.createOrder = catchAsync(async (req, res) => {
   const newOrder = await createOrder(req.body, req.user._id);

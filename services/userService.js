@@ -2,7 +2,7 @@
 
 const DataAccess = require('../utils/dataAccess');
 const AppError = require('../utils/appError');
-const { filterObj } = require('../controllers/helperController');
+const { filterObj } = require('../services/helperService');
 
 const userModel = 'User';
 
