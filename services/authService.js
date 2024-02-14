@@ -8,7 +8,7 @@ const { promisify } = require('util');
 const sendEmail = require('../utils/email');
 const crypto = require('crypto');
 
-const signToken = id => jwt.sign({ id }, jwtSecret, { expiresIn: jwtExpiresIn });
+const signToken = (id)=> jwt.sign({ id }, jwtSecret, { expiresIn: jwtExpiresIn });
 
 
 const createTokenSendResponse = (user, statusCode, res) => {
@@ -48,7 +48,6 @@ const verifyToken = async (token) => {
   }
 };
 
-// Get user by ID and perform checks
 const getUserAndCheck = async (decoded, next) => {
   if (!decoded) {
     return next(new AppError('Invalid token or token expired', 401));
@@ -66,7 +65,6 @@ const getUserAndCheck = async (decoded, next) => {
   return currentUser;
 };
 
-// Main authentication function
 exports.authenticate = async (req, next) => {
   const token = extractToken(req);
   if (!token) {
@@ -77,13 +75,12 @@ exports.authenticate = async (req, next) => {
   return await getUserAndCheck(decoded, next);
 };
 
-// Optionally authenticate user
 exports.optionallyAuthenticate = async (req) => {
   const token = extractToken(req);
   if (token) {
     const decoded = await verifyToken(token);
     if (decoded) {
-      return await User.findById(decoded.id); // Return user if found, otherwise null
+      return await User.findById(decoded.id); 
     }
   }
   return null; // Return null if no token or token is invalid

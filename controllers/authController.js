@@ -13,9 +13,9 @@ const {
   updateUserPassword } = require('../services/authService');
 
 
-/* Middleware function that is used to protect routes from unauthorized access.
+/* Used to protect routes from unauthorized access.
    It checks if the user is logged in by verifying the JSON Web Token (JWT)
-  provided in the request header or cookie. */
+   provided in the request header or cookie. */
 exports.protect = catchAsync(async (req, res, next) => {
   const user = await authenticate(req, next);
   if (user) {
@@ -30,7 +30,7 @@ exports.conditionalProtect = catchAsync(async (req, res, next) => {
   next();
 });
 
-/* Middleware function that restricts access to certain routes based on the user's role.
+/* Restricts access to certain routes based on the user's role.
  It takes in an array of roles as arguments and returns another middleware
  function that checks if the user's role is included in the provided roles array.
  If the user's role is not included, it returns an error message indicating that the user
@@ -57,6 +57,7 @@ exports.signup = catchAsync(async (req, res, next) => {
 exports.login = catchAsync(async (req, res, next) => {
   await login(req.body.email, req.body.password, next, res);
 });
+
 exports.logout = (req, res) => {
   logout(res);
 };
