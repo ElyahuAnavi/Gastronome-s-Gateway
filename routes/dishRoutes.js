@@ -38,7 +38,6 @@ router
   .patch(
     uploadDishImages,
     resizeDishImages,
-    validateRequest(dishValidationSchema),
     updateDish
   )
   .delete(deleteDish);

@@ -69,8 +69,8 @@ app.use((req, res, next) => {
   next();
 });
 
+/* The code is loading the models for the application. */
 const loadModels = require('./utils/modelLoader');
-
 const modelsPath = path.join(__dirname, 'models');
 loadModels(modelsPath);
 
