@@ -87,17 +87,11 @@ exports.optionallyAuthenticate = async (req) => {
 };
 
 exports.signup = async (userData, res) => {
-  console.log('====================================');
-  console.log('signup');
-  console.log('====================================');
   const newUser = await User.create(userData);
   return createTokenSendResponse(newUser, 201, res);
 };
 
 exports.login = async (email, password, next, res) => {
-  console.log('====================================');
-  console.log('login');
-  console.log('====================================');
   if (!email || !password) {
     return next(new AppError('Please provide email and password!', 400));
   }
