@@ -1,14 +1,15 @@
 // services/authService.js
 
 const jwt = require('jsonwebtoken');
-const User = require('../models/userModel');
 const AppError = require('../utils/appError');
 const { jwtSecret, jwtExpiresIn, jwtCookieExpiresIn, nodeEnv } = require('../config/vars');
 const { promisify } = require('util');
 const sendEmail = require('../utils/email');
 const crypto = require('crypto');
+const dataAccess = require('../utils/dataAccess');
 
-const signToken = (id)=> jwt.sign({ id }, jwtSecret, { expiresIn: jwtExpiresIn });
+const userModel = 'User';
+const signToken = (id) => jwt.sign({ id }, jwtSecret, { expiresIn: jwtExpiresIn });
 
 
 const createTokenSendResponse = (user, statusCode, res) => {
@@ -53,7 +54,7 @@ const getUserAndCheck = async (decoded, next) => {
     return next(new AppError('Invalid token or token expired', 401));
   }
 
-  const currentUser = await User.findById(decoded.id);
+  const currentUser = await dataAccess.findById(userModel, decoded.id);
   if (!currentUser) {
     return next(new AppError('The user belonging to this token does no longer exist.', 401));
   }
@@ -80,14 +81,14 @@ exports.optionallyAuthenticate = async (req) => {
   if (token) {
     const decoded = await verifyToken(token);
     if (decoded) {
-      return await User.findById(decoded.id); 
+      return await dataAccess.findById(userModel, decoded.id);
     }
   }
   return null; // Return null if no token or token is invalid
 };
 
 exports.signup = async (userData, res) => {
-  const newUser = await User.create(userData);
+  const newUser = await dataAccess.create(userModel, userData);
   return createTokenSendResponse(newUser, 201, res);
 };
 
@@ -96,7 +97,7 @@ exports.login = async (email, password, next, res) => {
     return next(new AppError('Please provide email and password!', 400));
   }
 
-  const user = await User.findOne({ email }).select('+password');
+  const user = await dataAccess.findOneByConditions(userModel, { email }, '+password');
   if (!user || !(await user.correctPassword(password, user.password))) {
     return next(new AppError('Incorrect email or password', 401));
   }
@@ -106,16 +107,16 @@ exports.login = async (email, password, next, res) => {
 
 exports.logout = (res) => {
   res.cookie('jwt', 'loggedout', {
-    expires: new Date(Date.now() + 10 * 1000), // Set the cookie to expire in 10 seconds
+    expires: new Date(Date.now() + 10 * 1000),
     httpOnly: true,
-    secure: nodeEnv === 'production' // Add secure flag in production
+    secure: nodeEnv === 'production'
   });
   res.status(200).json({ status: 'success' });
 };
 
 exports.forgotPassword = async (email, req, next) => {
   // 1) Get user based on POSTed email
-  const user = await User.findOne({ email });
+  const user = await dataAccess.findOneByConditions(userModel, { email });
   if (!user) {
     return next(new AppError('There is no user with email address.', 404));
   }
@@ -153,9 +154,9 @@ exports.resetPassword = async (token, newPassword, newPasswordConfirm, res, next
   const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
 
   // 2) Find user by token and ensure token hasn't expired
-  const user = await User.findOne({
+  const user = await dataAccess.findOneByConditions(userModel, {
     passwordResetToken: hashedToken,
-    passwordResetExpires: { $gt: Date.now() }
+    passwordResetExpires: { $gt: Date.now() },
   });
 
   if (!user) {
@@ -173,8 +174,8 @@ exports.resetPassword = async (token, newPassword, newPasswordConfirm, res, next
   createTokenSendResponse(user, 200, res);
 };
 
-exports.updateUserPassword = async (userId, currentPassword, newPassword, newPasswordConfirm,res) => {
-  const user = await User.findById(userId).select('+password');
+exports.updateUserPassword = async (userId, currentPassword, newPassword, newPasswordConfirm, res) => {
+  const user = await dataAccess.findOneByConditions(userModel, { _id: userId }, '+password');
 
   // Verify current password
   if (!(await user.correctPassword(currentPassword, user.password))) {

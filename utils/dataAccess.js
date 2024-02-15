@@ -31,6 +31,9 @@ class DataAccess {
   async create(modelName, data) {
     const Model = this.getModel(modelName);
     const document = await Model.create(data);
+    if (document.password) {
+      document.password = undefined; // Ensure the password is not returned
+    }
     return document;
   }
 
@@ -65,6 +68,18 @@ class DataAccess {
     if (!document) {
       throw new AppError('No document found with that ID', 404);
     }
+  }
+
+  async findOneByConditions(modelName, conditions, projection = {}, options = {}) {
+    const Model = this.getModel(modelName);
+    const documents = await Model.findOne(conditions, projection, options);
+    return documents;
+  }
+
+  async updateMany(modelName, filter, updateData) {
+    const Model = this.getModel(modelName);
+    const result = await Model.updateMany(filter, updateData);
+    return result;
   }
 
   async aggregate(modelName, pipeline) {
