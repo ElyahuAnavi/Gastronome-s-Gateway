@@ -2,7 +2,7 @@
 
 /**
  * A higher-order function to wrap async route handlers and pass errors to Express's error handling middleware.
- * 
+ *
  * By wrapping async functions with catchAsync, we avoid the need for try/catch blocks in each async function.
  * Instead, any thrown error is forwarded to Express's next() function, invoking the error handling middleware.
  *
@@ -16,4 +16,3 @@ module.exports = fn => {
     fn(req, res, next).catch(next); // Any thrown error is passed to next(), triggering error handling
   };
 };
-

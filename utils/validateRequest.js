@@ -1,7 +1,7 @@
 // utils/validateRequest.js
 
 // Middleware for validating request data with a Joi schema
-const validateRequest = (schema) => (req, res, next) => {
+const validateRequest = schema => (req, res, next) => {
   if (!schema) {
     throw new Error('Validation schema is undefined');
   }

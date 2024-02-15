@@ -9,6 +9,7 @@ const crypto = require('crypto');
 const dataAccess = require('../utils/dataAccess');
 
 const userModel = 'User';
+
 const signToken = (id) => jwt.sign({ id }, jwtSecret, { expiresIn: jwtExpiresIn });
 
 
@@ -123,7 +124,7 @@ exports.forgotPassword = async (email, req, next) => {
 
   // 2) Generate the random reset token
   const resetToken = user.createPasswordResetToken();
-  await user.save({ validateBeforeSave: false });
+  await dataAccess.saveDocument(user, { validateBeforeSave: false });
 
   // 3) Construct reset URL and email message
   const resetURL = `${req.protocol}://${req.get('host')}/api/v1/users/resetPassword/${resetToken}`;
@@ -143,7 +144,7 @@ exports.forgotPassword = async (email, req, next) => {
   } catch (err) {
     user.passwordResetToken = undefined;
     user.passwordResetExpires = undefined;
-    await user.save({ validateBeforeSave: false });
+    await dataAccess.saveDocument(user, { validateBeforeSave: false });
 
     throw new AppError('There was an error sending the email. Try again later!', 500);
   }
@@ -168,7 +169,7 @@ exports.resetPassword = async (token, newPassword, newPasswordConfirm, res, next
   user.passwordConfirm = newPasswordConfirm;
   user.passwordResetToken = undefined;
   user.passwordResetExpires = undefined;
-  await user.save();
+  await dataAccess.saveDocument(user);
 
   // 4) Log the user in (send JWT)
   createTokenSendResponse(user, 200, res);
@@ -185,7 +186,7 @@ exports.updateUserPassword = async (userId, currentPassword, newPassword, newPas
   // Update password and save user
   user.password = newPassword;
   user.passwordConfirm = newPasswordConfirm;
-  await user.save();
+  await dataAccess.saveDocument(user);
 
   createTokenSendResponse(user, 200, res);
 };

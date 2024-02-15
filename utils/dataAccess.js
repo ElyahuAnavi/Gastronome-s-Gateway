@@ -28,6 +28,20 @@ class DataAccess {
     return mongoose.model(modelName);
   }
 
+  async saveDocument(document , options = {}) {
+    if (!document || typeof document.save !== 'function') {
+      throw new AppError('Invalid document or document does not have a save method', 400);
+    }
+
+    try {
+      const savedDocument = await document.save(options);
+      return savedDocument;
+    } catch (error) {
+      // Handle or throw the error depending on your error handling strategy
+      throw new AppError('Failed to save the document', 500);
+    }
+  }
+
   async create(modelName, data) {
     const Model = this.getModel(modelName);
     const document = await Model.create(data);

@@ -6,7 +6,7 @@ const {
   getTopDishes
 } = require('../services/dishService');
 const { sendResponse } = require('../utils/responseHandler');
-const { getOne, createOne, updateOne, deleteOne} = require('./handlerFactory');
+const { getOne, createOne, updateOne, deleteOne } = require('./handlerFactory');
 const catchAsync = require('../utils/catchAsync');
 
 const dishModel = 'Dish';

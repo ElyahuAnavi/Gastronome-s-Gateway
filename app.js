@@ -1,5 +1,4 @@
 // app.js
-const { nodeEnv } = require('./config/vars');
 const path = require('path');
 const express = require('express');
 const cors = require('cors');
@@ -11,6 +10,7 @@ const xss = require('xss-clean');
 const hpp = require('hpp');
 
 const cookieParser = require('cookie-parser');
+const { nodeEnv } = require('./config/vars');
 
 const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
@@ -69,8 +69,9 @@ app.use((req, res, next) => {
   next();
 });
 
-/* The code is loading the models for the application. */
+/* Loading the models for the application. */
 const loadModels = require('./utils/modelLoader');
+
 const modelsPath = path.join(__dirname, 'models');
 loadModels(modelsPath);
 

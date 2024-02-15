@@ -1,7 +1,7 @@
 // server.js
 
 const { connectDB } = require('./utils/database');
-const { port, databaseURL } = require('./config/vars'); 
+const { port, databaseURL } = require('./config/vars');
 
 // Handling uncaught exceptions at the top level
 process.on('uncaughtException', err => {

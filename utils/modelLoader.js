@@ -2,8 +2,8 @@
 const fs = require('fs');
 const path = require('path');
 
-const loadModels = (modelsPath) => {
-  fs.readdirSync(modelsPath).forEach((file) => {
+const loadModels = modelsPath => {
+  fs.readdirSync(modelsPath).forEach(file => {
     if (path.extname(file) === '.js') {
       require(path.join(modelsPath, file));
     }
